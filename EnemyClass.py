@@ -26,13 +26,16 @@ class Enemy:
         return self.model
     def getPosition(self):
         return (self.x,self.y)
-    def move(self,xDirection, yDirection,windowWidth,windowHeight):
+    def move(self, xDirection, yDirection,windowWidth,windowHeight):
         x = self.x + (xDirection * self.movement)
         y = self.y + (yDirection * self.movement)
+
         if self.valid(x,y,windowWidth,windowHeight):
             self.x = x
             self.y = y
-        self.hitbox = self.hitbox.move(0,-self.movement)
+            self.hitbox = self.hitbox.move(0,-self.movement)
+            print("invalid")
+
     def valid(self,x,y,windowWidth,windowHeight):
         if x > (self.model.get_width()/4) and x < (windowWidth - (self.model.get_width())):
             if y > ((5 * windowHeight)/8) and y < ((5*windowHeight)/6):
