@@ -77,7 +77,7 @@ while gameStatus:
             if player.getUpgrades()[1] == 'shield':
                     player.changeDefenseAugment('none')
             else:
-                gameStatus = False#                                                                             change later to bring back to main menu
+                gameStatus = False  # change later to bring back to main menu
 
         for enemy in enemies:
             if bullet.getHitbox().colliderect(enemy.getHitbox()) and (bullet.getOrigin() == 'player'):

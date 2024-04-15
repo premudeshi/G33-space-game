@@ -1,4 +1,5 @@
 import pygame
+import random
 import BulletClass
 
 class Enemy:
@@ -10,16 +11,18 @@ class Enemy:
         self.model = pygame.image.load(model)
         self.model = pygame.transform.scale(self.model, (modelSize,modelSize))
         self.modelCenter = [(self.model.get_width()/2),(self.model.get_height()/2)]
-        # movement
-        self.x = (windowWidth / 2) - self.modelCenter[0]
-        self.y =  ((windowHeight)/4) - self.modelCenter[1]
+        # setting random x position
+        self.x = random.randint(0, windowWidth - self.model.get_width())
+
+        # start from random y position at top
+        self.y =  random.randint(-self.model.get_height(), self.model.get_height() / 2)
         self.movement = movement
         #mechanics 
         self.lastshoot = 0
         self.cooldown =  cooldown
         # hitbox
-        self.hitbox = pygame.Rect(0,0,modelSize, modelSize) 
-        self.hitbox = self.hitbox.move(self.x,self.y)
+        self.hitbox = pygame.Rect(0, 0, modelSize, modelSize) 
+        self.hitbox = self.hitbox.move(self.x, self.y)
 
     #helper functions
     def getModel(self):
