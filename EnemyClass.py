@@ -30,11 +30,17 @@ class Enemy:
         x = self.x + (xDirection * self.movement)
         y = self.y + (yDirection * self.movement)
 
+        '''
         if self.valid(x,y,windowWidth,windowHeight):
             self.x = x
             self.y = y
             self.hitbox = self.hitbox.move(0,-self.movement)
             print("invalid")
+        '''
+
+        self.x = x
+        self.y = y
+        self.hitbox = self.hitbox.move(0, -self.movement)
 
     def valid(self,x,y,windowWidth,windowHeight):
         if x > (self.model.get_width()/4) and x < (windowWidth - (self.model.get_width())):
