@@ -1,3 +1,5 @@
+import random
+
 import pygame
 import BulletClass
 
@@ -16,17 +18,22 @@ class Enemy:
         self.movement = movement
         #mechanics
         self.lastshoot = 0
-        self.cooldown =  cooldown
+        self.cooldown = cooldown
         # hitbox
         self.hitbox = pygame.Rect(0,0,modelSize, modelSize)
         self.hitbox = self.hitbox.move(self.x,self.y)
+        self.shoot_chance = 0.2
 
     #helper functions
     def getModel(self):
         return self.model
     def getPosition(self):
         return (self.x,self.y)
-
+    def shoot(self):
+        randd = random.random()
+        #print(randd)
+        if random.random() < self.shoot_chance:
+            return True
     def move(self, xDirection, yDirection, windowWidth, windowHeight):
         x = self.x + (xDirection * self.movement)
         y = self.y + (yDirection * self.movement)

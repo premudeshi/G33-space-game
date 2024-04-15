@@ -60,7 +60,7 @@ while gameStatus:
             gameStatus = False
         if spawnTimer >= spawnInterval and enemyCount < 3:
             spawnTimer = 0
-            enemy = EnemyClass.Enemy("EnemyModel1.png",windowWidth,windowHeight,350,.1,60,)
+            enemy = EnemyClass.Enemy("EnemyModel1.png",windowWidth,windowHeight,600,.1,60,)
             enemies.append(enemy)
             window.blit(enemy.getModel(), enemy.getPosition())
 
@@ -95,7 +95,8 @@ while gameStatus:
         window.blit(enemy.getModel(), enemy.getPosition())
         pygame.draw.rect(window, (255, 0, 0), enemy.getHitbox(), 1)
         if (pygame.time.get_ticks() - enemy.getLastShoot()) >= enemy.getCooldown():
-            bullets.append(enemy.pew())  # Draw enemy hitbox
+            if enemy.shoot():
+                bullets.append(enemy.pew())  # Draw enemy hitbox
 
     pygame.display.flip()
     spawnTimer += clock.tick(FPS)
