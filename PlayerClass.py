@@ -69,8 +69,8 @@ class Player:
                 if self.cooldown <= 50:
                     self.cooldown = 50
             elif self.attackAugment == 'powerGun':
-                return BulletClass.Bullet('player', self.x,(self.y - self.model.get_height()), '128\\PlayerBullet.png', 75)
-            return BulletClass.Bullet('player', self.x,(self.y - self.model.get_height()), '128\\PlayerBullet.png', 50)
+                return BulletClass.Bullet('player', self.x,(self.y - self.model.get_height()), 'PlayerBullet.png', 75,10)
+            return BulletClass.Bullet('player', self.x,(self.y - self.model.get_height()), 'PlayerBullet.png', 50,10)
     def adjustScore(self,amount):
         self.score += amount
     def getScore(self):
