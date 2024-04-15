@@ -90,7 +90,8 @@ while gameStatus:
     bullets = [bullet for bullet in bullets if bullet.getPosition()[1] < windowHeight and bullet.getPosition()[1] > 0]
 
     for enemy in enemies:
-        enemy.move(0,-1,windowWidth,windowHeight)
+        #enemy.move(0,-1,windowWidth,windowHeight)
+        enemy.followPlayer(player.getPosition()[0], player.getPosition()[1])
         window.blit(enemy.getModel(), enemy.getPosition())
         pygame.draw.rect(window, (255, 0, 0), enemy.getHitbox(), 1)
         if (pygame.time.get_ticks() - enemy.getLastShoot()) >= enemy.getCooldown():

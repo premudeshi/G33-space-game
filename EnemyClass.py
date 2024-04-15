@@ -56,3 +56,15 @@ class Enemy:
 
     def getWorth(self):
         return 10
+    
+    def followPlayer(self, playerX, playerY):
+        directionX = playerX - self.x
+        directionY = playerY - self.y
+        distance = max(abs(directionX), abs(directionY))
+
+        if distance != 0:
+            self.x += (directionX / distance) * self.movement
+            self.y += (directionY / distance) * self.movement
+
+            self.hitbox.x = int(self.x)
+            self.hitbox.y = int(self.y)
