@@ -60,7 +60,7 @@ while gameStatus:
             gameStatus = False
         if spawnTimer >= spawnInterval and enemyCount < 3:
             spawnTimer = 0
-            enemy = EnemyClass.Enemy("EnemyModel1.png",windowWidth,windowHeight,350,45,60,)
+            enemy = EnemyClass.Enemy("EnemyModel1.png",windowWidth,windowHeight,350,.1,60,)
             enemies.append(enemy)
             window.blit(enemy.getModel(), enemy.getPosition())
 
