@@ -49,4 +49,4 @@ class Enemy:
         return self.hitbox
     def pew (self):
         self.setLastShoot(pygame.time.get_ticks())
-        return BulletClass.Bullet('enemy', self.x,(self.y - self.model.get_height()), '128\\EnemyBullet.png',50)
+        return BulletClass.Bullet('enemy', self.x,(self.y - self.model.get_height()), 'EnemyBullet.png',50,10)

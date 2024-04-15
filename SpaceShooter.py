@@ -12,7 +12,7 @@ windowHeight = 0
 windowWidth = 0
 gameStatus = True
 FPS = 60
-modelPath = '128\\PlayerModel1.png' # put the remainder of your directory here with loaded png
+modelPath = 'PlayerModel1.png' # put the remainder of your directory here with loaded png
 enemyCount = 0 # used to set limit on enemies in game may use point system for type of enemy later
 spawnTimer = 0
 spawnInterval = 5000
@@ -60,7 +60,7 @@ while gameStatus:
             gameStatus = False
         if spawnTimer >= spawnInterval and enemyCount < 3:
             spawnTimer = 0
-            enemy = EnemyClass.Enemy("128\\EnemyModel1.png",windowWidth,windowHeight,350,45,60,10)
+            enemy = EnemyClass.Enemy("EnemyModel1.png",windowWidth,windowHeight,350,45,60,)
             enemies.append(enemy)
             window.blit(enemy.getModel(), enemy.getPosition())
 
