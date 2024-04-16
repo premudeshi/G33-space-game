@@ -4,7 +4,14 @@ import random
 from player import Player
 from enemy import Enemy
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, bullets, all_sprites, enemies, enemy_bullets, LEVEL
-from backgrounds import draw_pause_menu, Menu, draw_spread
+from backgrounds import draw_pause_menu, Menu, draw_spread, draw_main_menu, draw_background
+from accounts import login, signUp
+from alien import Alien
+from asteroid import Asteroid
+
+FONT = pygame.font.SysFont('Georgia', 20)
+
+
 
 class main:
     def __init__(self):
@@ -17,10 +24,27 @@ class main:
         pygame.display.set_caption("Space Shooter")
 
         # create player object
-        self.player = Player("sprites/player.png", self.WIDTH // 2, self.HEIGHT // 2, speed = 5)
+        self.player = Player("sprites/fancyPlayer.png", self.WIDTH // 2, self.HEIGHT // 2, speed = 5)
 
         # create sprite group for player  
         all_sprites.add(self.player)
+
+
+    def main_menu(self):
+        while True:
+            start, quit_game = draw_main_menu(self.screen)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if start.collidepoint(event.pos):
+                        self.run()
+                    elif quit_game.collidepoint(event.pos):
+                        pygame.quit()
+                        return
+                        
+            pygame.display.flip()
 
     def run(self):
         # game loop
@@ -83,6 +107,7 @@ class main:
                 if self.player.upgrades[4] == 0:
                     quit()
                 
+                
                 # update all sprites
                 all_sprites.update()
             
@@ -91,12 +116,15 @@ class main:
                 for bullet in enemy_bullet_collisions:
                     if (self.player.i_frames <= 0):
                         self.player.decrement_lives()
+                        for enemy in enemies:
+                            all_sprites.remove(enemy)
+                            enemies.remove(enemy)
 
                 # if player shoots an enemy, kill the enemy. Will add explosion later
                 for enemy in enemies:
                     player_bullet_collisions = pygame.sprite.spritecollide(enemy, bullets, True)
                     for bullet in player_bullet_collisions:
-                        if bullet.origin != 1:  # check if bullet origin is not from enemy (must be from player)
+                        if bullet.origin != 1 and bullet.origin != 7:  # check if bullet origin is not from enemy (must be from player)
                             # kill the enemy 
                             all_sprites.remove(enemy)
                             enemies.remove(enemy)
@@ -104,20 +132,32 @@ class main:
 
                 # if enemy touches player, kill player unless they have battering ram upgrade, in which case kill enemy
                 for enemy in enemies:
+                    # while already looping through enemies, we add their random ability to track the player
+                    if (random.randint(1, 50) == 1 and enemy.points == 3):
+                        # every frame that the enemy is moving away from the player, they have a 2% chance to correct themselves
+                        if (((self.player.rect.x - enemy.rect.x > 0) and (enemy.direction == -1))) or ((self.player.rect.x - enemy.rect.x < 0) and (enemy.direction == 1)):
+                            enemy.direction = enemy.direction * -1
                     if pygame.sprite.collide_rect(self.player, enemy):
-                        # determine if player has battering ram
-                        if self.player.upgrades[3] == 0:
+                        # determine if player has battering ram or if they ran into an asteroid, which still kills them
+                        if self.player.upgrades[3] == 0 or enemy.points == 1:
                             # if not, kill player
                             self.player.decrement_lives()
+                            for enemy in enemies:
+                                all_sprites.remove(enemy)
+                                enemies.remove(enemy)
                         else:
                             # if so, kill the enemy 
                             all_sprites.remove(enemy)
                             enemies.remove(enemy)
-                            self.player.points += (15 * LEVEL)
+                            self.player.points += (15 * LEVEL * enemy.points)
+
 
                 # update the screen
-                self.screen.fill((0, 0, 0))
+                draw_background(self.screen)
                 all_sprites.draw(self.screen)
+                self.screen.blit(FONT.render("LIVES: " + str(self.player.upgrades[4]), True, 'white'), (25, 0))
+                self.screen.blit(FONT.render("POINTS: " + str(self.player.points), True, 'white'), (150, 0))
+                self.screen.blit(FONT.render("LEVEL: " + str(LEVEL), True, 'white'), (25, 25))
                 pygame.display.flip()
 
                 # ensure game runs at 60fps
@@ -131,20 +171,41 @@ class main:
                 # if an enemy is due to spawn, spawn them as so:
                 if spawnTimer <= 0:
                     # pick a random number of enemies based on the level
-                    for i in range(LEVEL * random.randint(1, 3) - 2 * random.randint(0, LEVEL) + 1):
+                    for i in range(LEVEL * random.randint(1, 2) - 2 * random.randint(0, LEVEL) + 1):
                         # summon the enemy at a random position offscreen
-                        enemy = Enemy("sprites/enemy.png", random.randint(0, 450), random.randint(1, 3) * -50, speed = 2 * (pow(1.05, LEVEL)))
+                        enemy = Enemy("sprites/EnemyModel1.png", random.randint(0, 400), random.randint(1, 5) * -50, speed = 2 * (pow(1.05, LEVEL)))
                         # create the enemy
                         enemy.image = pygame.transform.scale(enemy.image, (SCREEN_WIDTH // 9, SCREEN_HEIGHT // 16))
                         enemy.rect.width = SCREEN_WIDTH // 9
                         enemy.rect.height = SCREEN_HEIGHT // 16
                         all_sprites.add(enemy)
                         enemies.add(enemy)
+                    if (random.randint(1, 10) < LEVEL): # ALIEN
+                        alien = Alien("sprites/UFO.png", 600, self.player.rect.y + 200, speed = 2)
+                        # create the alien
+                        alien.image = pygame.transform.scale(alien.image, (SCREEN_WIDTH // 9, SCREEN_HEIGHT // 16))
+                        alien.rect.width = SCREEN_WIDTH // 9
+                        alien.rect.height = SCREEN_HEIGHT // 16
+                        all_sprites.add(alien)
+                        enemies.add(alien)
+                    if (random.randint(0, 5) < LEVEL): # METEOR
+                        asteroid = Asteroid("sprites/asteroid.png", 600, self.player.rect.y - 600, speed = 7)
+                        # create the asteroid
+                        asteroid.image = pygame.transform.scale(asteroid.image, (SCREEN_WIDTH // 6, SCREEN_HEIGHT // 8))
+                        asteroid.rect.width = SCREEN_WIDTH // 6
+                        asteroid.rect.height = SCREEN_HEIGHT // 8
+                        all_sprites.add(asteroid)
+                        enemies.add(asteroid)
                     # reset the timer
                     spawnTimer = random.randint(180, 300)
+                    
                 # otherwise, decrease their timer
                 else:
                     spawnTimer -= 1
+                    
+                ##if self.player.points > 1500 * LEVEL:
+                  ##  self.player.points += 500 * LEVEL
+                   ## LEVEL += 1
             
             # if game is paused, call the pause screen options in backgrounds.py
             else:
@@ -158,4 +219,4 @@ class main:
 # run the game
 if __name__ == "__main__":
     game = main()
-    game.run()
+    game.main_menu()

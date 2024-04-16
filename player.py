@@ -7,7 +7,7 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, bullets, all_sprites
 class Player(Ship):
     def __init__(self, image_path, x, y, speed):
         # initialize the player
-        super().__init__(image_path, x, y)
+        super().__init__(image_path, x - 25, y)
         self.image = pygame.transform.scale(self.image, (SCREEN_WIDTH // 9, SCREEN_HEIGHT // 16))
         self.rect.width = SCREEN_WIDTH // 9
         self.rect.height = SCREEN_HEIGHT // 16

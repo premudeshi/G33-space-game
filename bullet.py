@@ -36,6 +36,8 @@ class Bullet(Ship):
             # player reverse spread bullet B, moves diagonally
             self.rect.y += self.speed * 2
             self.rect.x -= self.speed - 3
+        elif (self.origin == 7):
+            self.rect.y -= self.speed * 2
 
         # if bullet is out of bounds, kill it
         if self.rect.bottom < 0 or self.rect.bottom > SCREEN_HEIGHT:

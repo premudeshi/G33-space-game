@@ -15,6 +15,31 @@ class Menu(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
 
+def draw_background(screen):
+    background = pygame.image.load('sprites/background.png')
+    screen.blit(background, (0, 0))
+    
+
+def draw_main_menu(screen):
+    pygame.draw.rect(SURFACE, (128, 128, 128, 50), [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT])
+    screen.blit(SURFACE, (0, 0))
+    # first, create the button itself. It will be white and have rounded edges (what the 0, 10 at the end means)
+    play = pygame.draw.rect(SURFACE, 'white', [SCREEN_WIDTH / 4 - 20, 25, 280, 50], 0, 10)
+    # now add its text. It will use our above font in black
+    SURFACE.blit(FONT.render('PLAY', True, 'black'), (SCREEN_WIDTH / 4 + 5, 38))
+    # draw it to the screen and return it
+    SCREEN.blit(SURFACE, (0, 0))
+    
+    # first, create the button itself. It will be white and have rounded edges (what the 0, 10 at the end means)
+    quit_game = pygame.draw.rect(SURFACE, 'white', [SCREEN_WIDTH / 4 - 20, 725, 280, 50], 0, 10)
+    # now add its text. It will use our above font in black
+    SURFACE.blit(FONT.render('QUIT', True, 'black'), (SCREEN_WIDTH / 4 + 5, 738))
+    # draw it to the screen and return it
+    SCREEN.blit(SURFACE, (0, 0))
+    
+    return play, quit_game
+    
+
 # draw the main pause menu
 def draw_pause_menu(screen, upgrades):
     # main pause menu is gray and slightly transparent
