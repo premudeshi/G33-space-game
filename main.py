@@ -274,7 +274,7 @@ class main:
         # define the level the player starts on
         LEVEL = 1
         # reset points to 0 at start of new game and remove all upgrades
-        self.player.points = 12000
+        self.player.points = 0
         self.player.upgrades = self.upgrades = [0, 0, 0, 0, 3, 0, 0] # in order: spread, reverse, reverse spread, battering ram, lives, sprite, fire rate
         # reset the player's model
         self.player.change_sprite("sprites/FancyPlayer.png")
