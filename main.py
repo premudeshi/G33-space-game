@@ -39,7 +39,6 @@ class main:
         pygame.mixer.music.load('sounds/menu_theme.mp3')
         pygame.mixer.music.play(-1)
         # read the current high scores
-        nameArr, scoreArr = storeScores()
         # loop until player quits or starts game
         while True:
             draw_background(self.screen)
@@ -104,16 +103,18 @@ class main:
                             time.sleep(2)
                     # if player wants to view high scores, call display_hi_scores
                     elif hi_score.collidepoint(event.pos):
-                        self.display_hi_scores(nameArr, scoreArr)
+                        self.display_hi_scores()
             # update the screen
             pygame.display.flip()
             
     # display the high scores
-    def display_hi_scores(self, nameArr, scoreArr):
+    def display_hi_scores(self):
+        scoreInfo = storeScores()
+        print(scoreInfo[0])
         # repeat until player quits out
         while True:
             # call draw_hi_scores to show the high scores and create a back button
-            back = draw_hi_scores(self.screen, nameArr, scoreArr)
+            back = draw_hi_scores(self.screen, scoreInfo)
             for event in pygame.event.get():
                 # if player quits, let them
                 if event.type == pygame.QUIT:
@@ -268,7 +269,7 @@ class main:
         # timer that controls when the first enemies spawn
         spawnTimer = random.randint(60, 120)
         # keep track of high scores in case we beat one
-        nameArr, scoreArr = storeScores()
+        scoreInfo = storeScores()
         # define the level the player starts on
         LEVEL = 10
         # reset points to 0 at start of new game and remove all upgrades
@@ -446,7 +447,7 @@ class main:
                     
                 # send the player back to the main menu when they game over
                 if self.player.upgrades[4] == 0:
-                    writeScores(nameArr, scoreArr, username, self.player.points)
+                    writeScores(username, self.player.points)
                     self.main_menu(True, username)
                     
             
