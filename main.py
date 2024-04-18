@@ -5,13 +5,15 @@ import time
 from player import Player
 from enemy import Enemy
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, bullets, all_sprites, enemies, enemy_bullets, upPressed
-from backgrounds import draw_pause_menu, Menu, draw_spread, draw_main_menu, draw_background, draw_hi_scores, draw_log_in, draw_sign_up, draw_game_buttons
+from backgrounds import draw_pause_menu, Menu, draw_spread, draw_main_menu, draw_background, draw_hi_scores, draw_log_in, draw_sign_up, draw_game_buttons, display_game_over
 from accounts import login, signUp, storeScores, writeScores
 from alien import Alien
 from asteroid import Asteroid
 
 pygame.init()
 pygame.mixer.init()
+
+level_up = pygame.mixer.Sound('sounds/level_up.mp3')
 
 FONT = pygame.font.SysFont('Georgia', 20)
 
@@ -38,8 +40,6 @@ class main:
         pygame.mixer.music.stop()
         pygame.mixer.music.load('sounds/menu_theme.mp3')
         pygame.mixer.music.play(-1)
-        # read the current high scores
-        nameArr, scoreArr = storeScores()
         # loop until player quits or starts game
         while True:
             draw_background(self.screen)
@@ -104,16 +104,17 @@ class main:
                             time.sleep(2)
                     # if player wants to view high scores, call display_hi_scores
                     elif hi_score.collidepoint(event.pos):
-                        self.display_hi_scores(nameArr, scoreArr)
+                        self.display_hi_scores()
             # update the screen
             pygame.display.flip()
             
     # display the high scores
-    def display_hi_scores(self, nameArr, scoreArr):
+    def display_hi_scores(self):
+        scoreInfo = storeScores()
         # repeat until player quits out
         while True:
             # call draw_hi_scores to show the high scores and create a back button
-            back = draw_hi_scores(self.screen, nameArr, scoreArr)
+            back = draw_hi_scores(self.screen, scoreInfo)
             for event in pygame.event.get():
                 # if player quits, let them
                 if event.type == pygame.QUIT:
@@ -270,7 +271,7 @@ class main:
         # timer that controls when the first enemies spawn
         spawnTimer = random.randint(60, 120)
         # keep track of high scores in case we beat one
-        nameArr, scoreArr = storeScores()
+        scoreInfo = storeScores()
         # define the level the player starts on
         LEVEL = 1
         # reset points to 0 at start of new game and remove all upgrades
@@ -282,7 +283,13 @@ class main:
         for enemy in enemies:
             all_sprites.remove(enemy)
             enemies.remove(enemy)
-            self.player.points += (15 * LEVEL * enemy.points)
+        # same with bullets
+        for bullet in bullets:
+            bullets.remove(bullet)
+            all_sprites.remove(bullet) 
+        for bullet in enemy_bullets:
+            enemy_bullets.remove(bullet)
+            all_sprites.remove(bullet)
         # play the game music
         pygame.mixer.music.stop()
         pygame.mixer.music.load('sounds/game_theme.mp3')
@@ -389,9 +396,16 @@ class main:
                 for bullet in enemy_bullet_collisions:
                     if (self.player.i_frames <= 0):
                         self.player.decrement_lives()
+                        # in addition, remove all enemies and bullets currently on-screen
                         for enemy in enemies:
                             all_sprites.remove(enemy)
                             enemies.remove(enemy)
+                        for bullet in bullets:
+                            bullets.remove(bullet)
+                            all_sprites.remove(bullet)
+                        for bullet in enemy_bullets:
+                            enemy_bullets.remove(bullet)
+                            all_sprites.remove(bullet)
 
                 # if player shoots an enemy, kill the enemy. Will add explosion later
                 for enemy in enemies:
@@ -415,9 +429,15 @@ class main:
                         if self.player.upgrades[3] == 0 or enemy.points == 1:
                             # if not, kill player
                             self.player.decrement_lives()
+                            # in addition, remove all enemies and bullets currently on-screen
                             for enemy in enemies:
                                 all_sprites.remove(enemy)
                                 enemies.remove(enemy)
+                            for bullet in bullets:
+                                all_sprites.remove(bullet)
+                                bullets.remove(bullet)
+                            for bullet in enemy_bullets:
+                                enemy_bullets.remove(bullet)
                         else:
                             # if so, kill the enemy 
                             all_sprites.remove(enemy)
@@ -480,11 +500,13 @@ class main:
                 # level the player up every 350 points they get and award them 50 points
                 if (self.player.points >= 350 * LEVEL):
                     LEVEL += 1
+                    pygame.mixer.Sound.play(level_up)
                     self.player.points += 50
                     
                 # send the player back to the main menu when they game over
                 if self.player.upgrades[4] == 0:
-                    writeScores(nameArr, scoreArr, username, self.player.points)
+                    writeScores(username, self.player.points)
+                    display_game_over(self.screen)
                     self.main_menu(True, username)
                     
                     

@@ -8,6 +8,7 @@ pygame.init()
 pygame.mixer.init()
 
 player_laser = pygame.mixer.Sound('sounds/player_fire.mp3')
+player_explosion = pygame.mixer.Sound('sounds/player_explosion.mp3')
 
 class Player(Ship):
     def __init__(self, image_path, x, y, speed):
@@ -17,7 +18,7 @@ class Player(Ship):
         self.rect.width = SCREEN_WIDTH // 9
         self.rect.height = SCREEN_HEIGHT // 16
         self.cooldown = 0  # shooting cooldown starts at 0
-        self.points = 5000000
+        self.points = 0
         self.upgrades = [0, 0, 0, 0, 3, 0, 0] # in order: spread, reverse, reverse spread, battering ram, lives, sprite, fire rate
         self.speed = speed
         self.i_frames = 30 # give player half a second of i frames at the start
@@ -116,7 +117,8 @@ class Player(Ship):
         self.rect.x = SCREEN_WIDTH // 2
         self.rect.y = SCREEN_HEIGHT // 2
         self.i_frames = 60
-        time.sleep(0.3)
+        pygame.mixer.Sound.play(player_explosion)
+        time.sleep(.5)
         
     # change the player image in case user buys new sprite upgrade
     def change_sprite(self, image_path):

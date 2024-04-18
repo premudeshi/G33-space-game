@@ -1,4 +1,5 @@
 import pygame
+import time
 from constants import all_sprites, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, SURFACE, GAME_SURFACE
 from player import Player
 
@@ -7,6 +8,8 @@ pygame.init()
 # the font used in menus
 FONT = pygame.font.SysFont('Georgia', 20)
 TITLE_FONT = pygame.font.SysFont('Georgia', 30)
+# game over SFX
+game_over = pygame.mixer.Sound('sounds/game_over_theme.mp3')
 
 # Menu class
 class Menu(pygame.sprite.Sprite):
@@ -169,7 +172,7 @@ def draw_exit_menu(screen):
     return quit_game
     
 # draw the hi scores
-def draw_hi_scores(screen, nameArr, scoreArr):
+def draw_hi_scores(screen, scoreInfo):
     # background rect
     pygame.draw.rect(SURFACE, (0, 0, 0), [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT])
     screen.blit(SURFACE, (0, 0))
@@ -178,19 +181,19 @@ def draw_hi_scores(screen, nameArr, scoreArr):
     SURFACE.blit(FONT.render('HIGH SCORES', True, 'black'), (SCREEN_WIDTH / 4 + 40, 38))
     # score 1
     pygame.draw.rect(SURFACE, 'white', [SCREEN_WIDTH / 4 - 20, 125, 280, 50], 0, 10)
-    SURFACE.blit(FONT.render(nameArr[0] + '   ' +str(scoreArr[0]), True, 'black'), (SCREEN_WIDTH / 4 + 40, 138))
+    SURFACE.blit(FONT.render(scoreInfo[0]['user'] + '   ' +str(scoreInfo[0]['score']), True, 'black'), (SCREEN_WIDTH / 4 + 40, 138))
     # score 2
     pygame.draw.rect(SURFACE, 'white', [SCREEN_WIDTH / 4 - 20, 225, 280, 50], 0, 10)
-    SURFACE.blit(FONT.render(nameArr[1] + '   ' +str(scoreArr[1]), True, 'black'), (SCREEN_WIDTH / 4 + 40, 238))
+    SURFACE.blit(FONT.render(scoreInfo[1]['user'] + '   ' +str(scoreInfo[1]['score']), True, 'black'), (SCREEN_WIDTH / 4 + 40, 238))
     # score 3
     pygame.draw.rect(SURFACE, 'white', [SCREEN_WIDTH / 4 - 20, 325, 280, 50], 0, 10)
-    SURFACE.blit(FONT.render(nameArr[2] + '   ' +str(scoreArr[2]), True, 'black'), (SCREEN_WIDTH / 4 + 40, 338))
+    SURFACE.blit(FONT.render(scoreInfo[2]['user'] + '   ' +str(scoreInfo[2]['score']), True, 'black'), (SCREEN_WIDTH / 4 + 40, 338))
     # score 4
     pygame.draw.rect(SURFACE, 'white', [SCREEN_WIDTH / 4 - 20, 425, 280, 50], 0, 10)
-    SURFACE.blit(FONT.render(nameArr[3] + '   ' + str(scoreArr[3]), True, 'black'), (SCREEN_WIDTH / 4 + 40, 438))
+    SURFACE.blit(FONT.render(scoreInfo[3]['user'] + '   ' + str(scoreInfo[3]['score']), True, 'black'), (SCREEN_WIDTH / 4 + 40, 438))
     # score 5
     pygame.draw.rect(SURFACE, 'white', [SCREEN_WIDTH / 4 - 20, 525, 280, 50], 0, 10)
-    SURFACE.blit(FONT.render(nameArr[4] + '   ' + str(scoreArr[4]), True, 'black'), (SCREEN_WIDTH / 4 + 40, 538))
+    SURFACE.blit(FONT.render(scoreInfo[4]['user'] + '   ' + str(scoreInfo[4]['score']), True, 'black'), (SCREEN_WIDTH / 4 + 40, 538))
     # quit button
     quit_hi_scores = pygame.draw.rect(SURFACE, 'white', [SCREEN_WIDTH / 4 - 20, 725, 280, 50], 0, 10)
     SURFACE.blit(FONT.render('BACK', True, 'black'), (SCREEN_WIDTH / 4 + 85, 738))
@@ -288,3 +291,12 @@ def draw_game_buttons(screen):
     pygame.display.flip()
     
     return up, left, right, down, upright, upleft, downright, downleft, fire, menu_button
+    
+def display_game_over(screen):
+    screen.fill((128, 128, 128))
+    pygame.draw.rect(screen, 'black', [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 20)
+    screen.blit(FONT.render('GAME OVER', True, 'white'), (150, 375))
+    pygame.mixer.music.stop()
+    pygame.mixer.Sound.play(game_over)
+    pygame.display.flip()
+    time.sleep(4)
