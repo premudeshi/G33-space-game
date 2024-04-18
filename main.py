@@ -1,3 +1,5 @@
+import os.path
+
 import pygame
 import sys
 import random
@@ -9,6 +11,8 @@ from backgrounds import draw_pause_menu, Menu, draw_spread, draw_main_menu, draw
 from accounts import login, signUp, storeScores, writeScores
 from alien import Alien
 from asteroid import Asteroid
+
+PATH = os.path.abspath('.')+'/'
 
 pygame.init()
 pygame.mixer.init()
@@ -26,7 +30,7 @@ class main:
         pygame.display.set_caption("Space Shooter")
 
         # create player object
-        self.player = Player("sprites/fancyPlayer.png", self.WIDTH // 2, self.HEIGHT // 2, speed = 5)
+        self.player = Player(PATH+"sprites/fancyPlayer.png", self.WIDTH // 2, self.HEIGHT // 2, speed = 5)
 
         # create sprite group for player  
         all_sprites.add(self.player)
@@ -34,7 +38,7 @@ class main:
     # the main menu as seen when starting the game or after dying
     def main_menu(self, logged_in, username):
         pygame.mixer.music.stop()
-        pygame.mixer.music.load('sounds/menu_theme.mp3')
+        pygame.mixer.music.load(PATH+'sounds/menu_theme.mp3')
         pygame.mixer.music.play(-1)
         # read the current high scores
         # loop until player quits or starts game
@@ -274,7 +278,7 @@ class main:
         self.player.points = 100000
         self.player.upgrades = self.upgrades = [0, 0, 0, 0, 3, 0, 0] # in order: spread, reverse, reverse spread, battering ram, lives, sprite, fire rate
         # reset the player's model
-        self.player.change_sprite("sprites/FancyPlayer.png")
+        self.player.change_sprite(PATH+"sprites/FancyPlayer.png")
         # kill any enemies that exist from the last time the game was played
         for enemy in enemies:
             all_sprites.remove(enemy)
@@ -282,7 +286,7 @@ class main:
             self.player.points += (15 * LEVEL * enemy.points)
         # play the game music
         pygame.mixer.music.stop()
-        pygame.mixer.music.load('sounds/game_theme.mp3')
+        pygame.mixer.music.load(PATH+'sounds/game_theme.mp3')
         pygame.mixer.music.play(-1)
         # runs until player quits
         while running:
@@ -333,7 +337,7 @@ class main:
                     # secondary sprite option for the player
                     elif sprites.collidepoint(event.pos):
                         if (self.player.points >= 1000):
-                            self.player.change_sprite("sprites/PlayerModel1.png")
+                            self.player.change_sprite(PATH+"sprites/PlayerModel1.png")
                             self.player.upgrades[5] = 1
                             self.player.points -= 1000
                     # quit game by killing player
@@ -408,7 +412,7 @@ class main:
                     # pick a random number of enemies based on the level
                     for i in range(LEVEL * random.randint(1, 2) - 2 * random.randint(0, LEVEL) + 1):
                         # summon the enemy at a random position offscreen
-                        enemy = Enemy("sprites/EnemyModel1.png", random.randint(0, 400), random.randint(1, 5) * -50, speed = 2 * (pow(1.05, LEVEL)))
+                        enemy = Enemy(PATH+"sprites/EnemyModel1.png", random.randint(0, 400), random.randint(1, 5) * -50, speed = 2 * (pow(1.05, LEVEL)))
                         # create the enemy
                         enemy.image = pygame.transform.scale(enemy.image, (SCREEN_WIDTH // 9, SCREEN_HEIGHT // 16))
                         enemy.rect.width = SCREEN_WIDTH // 9
@@ -416,7 +420,7 @@ class main:
                         all_sprites.add(enemy)
                         enemies.add(enemy)
                     if (random.randint(1, 10) < LEVEL): # ALIEN
-                        alien = Alien("sprites/UFO.png", 600, self.player.rect.y + 200, speed = 2)
+                        alien = Alien(PATH+"sprites/UFO.png", 600, self.player.rect.y + 200, speed = 2)
                         # create the alien
                         alien.image = pygame.transform.scale(alien.image, (SCREEN_WIDTH // 9, SCREEN_HEIGHT // 16))
                         alien.rect.width = SCREEN_WIDTH // 9
@@ -424,7 +428,7 @@ class main:
                         all_sprites.add(alien)
                         enemies.add(alien)
                     if (random.randint(0, 5) < LEVEL): # METEOR
-                        asteroid = Asteroid("sprites/asteroid.png", 600, self.player.rect.y - 600, speed = 7)
+                        asteroid = Asteroid(PATH+"sprites/asteroid.png", 600, self.player.rect.y - 600, speed = 7)
                         # create the asteroid
                         asteroid.image = pygame.transform.scale(asteroid.image, (SCREEN_WIDTH // 6, SCREEN_HEIGHT // 8))
                         asteroid.rect.width = SCREEN_WIDTH // 6
