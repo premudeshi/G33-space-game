@@ -31,8 +31,6 @@ class main:
         # create sprite group for player  
         all_sprites.add(self.player)
 
-
-
     # the main menu as seen when starting the game or after dying
     def main_menu(self, logged_in, username):
         pygame.mixer.music.stop()
