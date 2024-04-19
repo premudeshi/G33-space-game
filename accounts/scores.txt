@@ -1,0 +1,10 @@
+john
+50000
+frank
+10000
+braden
+5000
+jimmy
+1000
+timmy
+200
