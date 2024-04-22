@@ -4,11 +4,11 @@ from ship import Ship
 from bullet import Bullet
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, bullets, all_sprites, enemy_bullets
 
-enemy_laser = pygame.mixer.Sound('sounds/enemy_fire.mp3')
+enemy_laser = pygame.mixer.Sound('sounds/enemy_fire.ogg')
 
 class Enemy(Ship):
     def __init__(self, image_path, x, y, speed, direction=1):
-        super().__init__(image_path, x, y)
+        super(Enemy, self).__init__(image_path, x, y)
         self.speed = speed
         # controls if enemy moves left or right
         self.direction = direction

@@ -7,12 +7,12 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, bullets, all_sprites,
 pygame.init()
 pygame.mixer.init()
 
-alien_laser = pygame.mixer.Sound('sounds/alien_fire.mp3')
+alien_laser = pygame.mixer.Sound('sounds/alien_fire.ogg')
 
 
 class Alien(Ship):
     def __init__(self, image_path, x, y, speed, direction=1):
-        super().__init__(image_path, x, y)
+        super(Alien, self).__init__(image_path, x, y)
         self.speed = speed
         # controls if enemy moves left or right
         self.direction = direction

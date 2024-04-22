@@ -6,7 +6,7 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, bullets, all_sprites,
 
 class Asteroid(Ship):
     def __init__(self, image_path, x, y, speed, direction=1):
-        super().__init__(image_path, x, y)
+        super(Asteroid, self).__init__(image_path, x, y)
         self.speed = speed
         # controls if enemy moves left or right
         self.direction = direction

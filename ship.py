@@ -5,7 +5,7 @@ class Ship(pygame.sprite.Sprite):
 
     # ships have an image and position
     def __init__(self, image_path, x, y):
-        super().__init__()
+        super(Ship, self).__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)

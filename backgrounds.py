@@ -9,12 +9,12 @@ pygame.init()
 FONT = pygame.font.SysFont('Georgia', 20)
 TITLE_FONT = pygame.font.SysFont('Georgia', 30)
 # game over SFX
-game_over = pygame.mixer.Sound('sounds/game_over_theme.mp3')
+game_over = pygame.mixer.Sound('sounds/game_over_theme.ogg')
 
 # Menu class
 class Menu(pygame.sprite.Sprite):
     def __init__(self, image_path, x, y):
-        super().__init__()
+        super(Menu, self).__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)

@@ -4,7 +4,7 @@ from constants import SCREEN_HEIGHT
 
 class Bullet(Ship):
     def __init__(self, image_path, x, y, speed, origin):
-        super().__init__(image_path, x, y)
+        super(Bullet, self).__init__(image_path, x, y)
         self.speed = speed
         # origin defines what type of bullet it is (player normal, player spread, enemy, etc)
         self.origin = origin  

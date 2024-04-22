@@ -1,6 +1,3 @@
-import pygame_sdl2
-pygame_sdl2.import_as_pygame()
-
 import pygame
 import sys
 import random
@@ -16,32 +13,32 @@ from asteroid import Asteroid
 pygame.init()
 pygame.mixer.init()
 
-level_up = pygame.mixer.Sound('sounds/level_up.mp3')
+level_up = pygame.mixer.Sound('sounds/level_up.ogg')
 
 FONT = pygame.font.SysFont('Georgia', 20)
 
 # three classes required to make pgs4a work
-def save_state(x, y):
+#def save_state(x, y):
     # Saves the game state.
 
-    with open("state.txt", "w") as f:
-        f.write("{} {}".format(x, y))
+ #   with open("state.txt", "w") as f:
+  #      f.write("{} {}".format(x, y))
         
-def load_state():
-    try:
-        with open("state.txt", "r") as f:
-            x, y = f.read().split()
-            x = int(x)
-            y = int(y)
+#def load_state():
+ #   try:
+  #      with open("state.txt", "r") as f:
+   #         x, y = f.read().split()
+    #        x = int(x)
+     #       y = int(y)
 
-        return x, y
-    except:
-        return None, None
+      #  return x, y
+    #except:
+     #   return None, None
 
-def delete_state():
+#def delete_state():
 
-    if os.path.exists("state.txt"):
-        os.unlink("state.txt")
+ #   if os.path.exists("state.txt"):
+  #      os.unlink("state.txt")
 
 class main:
     def __init__(self):
@@ -64,7 +61,7 @@ class main:
     # the main menu as seen when starting the game or after dying
     def main_menu(self, logged_in, username):
         pygame.mixer.music.stop()
-        pygame.mixer.music.load('sounds/menu_theme.mp3')
+        pygame.mixer.music.load('sounds/menu_theme.ogg')
         pygame.mixer.music.play(-1)
         # loop until player quits or starts game
         while True:
@@ -318,7 +315,7 @@ class main:
             all_sprites.remove(bullet)
         # play the game music
         pygame.mixer.music.stop()
-        pygame.mixer.music.load('sounds/game_theme.mp3')
+        pygame.mixer.music.load('sounds/game_theme.ogg')
         pygame.mixer.music.play(-1)
         # runs until player quits
         while running:
@@ -553,7 +550,7 @@ class main:
 # run the game
 if __name__ == "__main__":
     # On startup, load state saved by APP_WILLENTERBACKGROUND, and the delete that state. More code required for pgs4a to work.
-    x, y = load_state()
-    delete_state()
+    #x, y = load_state()
+    #delete_state()
     game = main()
     game.main_menu(False, '')
