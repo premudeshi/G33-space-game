@@ -2,6 +2,7 @@ import pygame
 import time
 from constants import all_sprites, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, SURFACE, GAME_SURFACE
 from player import Player
+from utils import getPath
 
 # initialize pygame so we can use its fonts
 pygame.init()
@@ -9,7 +10,7 @@ pygame.init()
 FONT = pygame.font.SysFont('Georgia', 20)
 TITLE_FONT = pygame.font.SysFont('Georgia', 30)
 # game over SFX
-game_over = pygame.mixer.Sound('sounds/game_over_theme.ogg')
+game_over = pygame.mixer.Sound(getPath()+'sounds/game_over_theme.ogg')
 
 # Menu class
 class Menu(pygame.sprite.Sprite):
@@ -21,7 +22,7 @@ class Menu(pygame.sprite.Sprite):
 
 # draw the background
 def draw_background(screen):
-    background = pygame.image.load('sprites/background.png')
+    background = pygame.image.load(getPath()+'sprites/background.png')
     screen.blit(background, (0, 0))
     
 

@@ -3,12 +3,13 @@ import time
 from ship import Ship
 from bullet import Bullet
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, bullets, all_sprites, upPressed
+from utils import getPath
 
 pygame.init()
 pygame.mixer.init()
 
-player_laser = pygame.mixer.Sound('sounds/player_fire.mp3')
-player_explosion = pygame.mixer.Sound('sounds/player_explosion.mp3')
+player_laser = pygame.mixer.Sound(getPath()+'sounds/player_fire.mp3')
+player_explosion = pygame.mixer.Sound(getPath()+'sounds/player_explosion.mp3')
 
 class Player(Ship):
     def __init__(self, image_path, x, y, speed):
@@ -65,18 +66,18 @@ class Player(Ship):
             bullet_y = self.rect.y - 20
 
             # create new bullet and add it to group
-            new_bullet = Bullet("sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=0)
+            new_bullet = Bullet(getPath()+"sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=0)
             bullets.add(new_bullet)
             all_sprites.add(new_bullet)
             
             # if player has spread, create 2 more bullets that shoot out from there
             if self.upgrades[0] == 1:
                 # bullet 1
-                new_bullet_A = Bullet("sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=2)
+                new_bullet_A = Bullet(getPath()+"sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=2)
                 bullets.add(new_bullet_A)
                 all_sprites.add(new_bullet_A)
                 # bullet 2
-                new_bullet_B = Bullet("sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=3)
+                new_bullet_B = Bullet(getPath()+"sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=3)
                 bullets.add(new_bullet_B)
                 all_sprites.add(new_bullet_B)
             
@@ -84,7 +85,7 @@ class Player(Ship):
             if self.upgrades[1] == 1:
                 bullet_x = self.rect.x + 9
                 bullet_y = self.rect.bottom - 5
-                new_bullet_reverse = Bullet("sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=4)
+                new_bullet_reverse = Bullet(getPath()+"sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=4)
                 # flip bullet backwards
                 new_bullet_reverse.image = pygame.transform.rotate(new_bullet_reverse.image, 180)
                 bullets.add(new_bullet_reverse)
@@ -93,13 +94,13 @@ class Player(Ship):
             # if player has reverse spread, create 2 more
             if self.upgrades[2] == 1:
                 # bullet 1
-                new_bullet_reverse_A = Bullet("sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=5)
+                new_bullet_reverse_A = Bullet(getPath()+"sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=5)
                 # flip backwards
                 new_bullet_reverse_A.image = pygame.transform.rotate(new_bullet_reverse_A.image, 180)
                 bullets.add(new_bullet_reverse_A)
                 all_sprites.add(new_bullet_reverse_A)
                 # bullet 2
-                new_bullet_reverse_B = Bullet("sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=6)
+                new_bullet_reverse_B = Bullet(getPath()+"sprites/PlayerBullet.png", bullet_x, bullet_y, 5, origin=6)
                 # flip backwards
                 new_bullet_reverse_B.image = pygame.transform.rotate(new_bullet_reverse_B.image, 180)
                 bullets.add(new_bullet_reverse_B)

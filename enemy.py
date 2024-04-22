@@ -3,8 +3,9 @@ import random
 from ship import Ship
 from bullet import Bullet
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, bullets, all_sprites, enemy_bullets
+from utils import getPath
 
-enemy_laser = pygame.mixer.Sound('sounds/enemy_fire.ogg')
+enemy_laser = pygame.mixer.Sound(getPath()+'sounds/enemy_fire.ogg')
 
 class Enemy(Ship):
     def __init__(self, image_path, x, y, speed, direction=1):
@@ -48,7 +49,7 @@ class Enemy(Ship):
             bullet_y = self.rect.bottom
 
             # create new bullet and add it to group. Origin 1 is for enemies
-            new_bullet = Bullet("sprites/EnemyBullet.png", bullet_x, bullet_y, 5, origin=1)
+            new_bullet = Bullet(getPath()+"sprites/EnemyBullet.png", bullet_x, bullet_y, 5, origin=1)
             enemy_bullets.add(new_bullet)
             all_sprites.add(new_bullet)
             self.cooldown = random.randint(60, 180)

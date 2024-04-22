@@ -3,11 +3,12 @@ import random
 from ship import Ship
 from bullet import Bullet
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, bullets, all_sprites, enemy_bullets
+from utils import getPath
 
 pygame.init()
 pygame.mixer.init()
 
-alien_laser = pygame.mixer.Sound('sounds/alien_fire.ogg')
+alien_laser = pygame.mixer.Sound(getPath()+'sounds/alien_fire.ogg')
 
 
 class Alien(Ship):
@@ -51,7 +52,7 @@ class Alien(Ship):
             bullet_y = self.rect.top
 
             # create new bullet and add it to group. Origin 7 is for enemies that shoot upwards
-            new_bullet = Bullet("sprites/EnemyBullet.png", bullet_x, bullet_y, 5, origin=7)
+            new_bullet = Bullet(getPath()+"sprites/EnemyBullet.png", bullet_x, bullet_y, 5, origin=7)
             new_bullet.image = pygame.transform.rotate(new_bullet.image, 180)
             enemy_bullets.add(new_bullet)
             all_sprites.add(new_bullet)

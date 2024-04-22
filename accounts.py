@@ -2,15 +2,16 @@ import json
 import requests
 import pygame
 
+from utils import getPath
 
 # Loads any .json file, returns it in python dictionary.
 def read_json_file(file_path):
-    with open(file_path, 'r') as file:
+    with open(getPath() + file_path, 'r') as file:
         data = json.load(file)
     return data
 #Overwrites json files
 def write_json_file(data, file_path):
-    with open(file_path, 'w') as file:
+    with open(getPath() + file_path, 'w') as file:
         json.dump(data, file)
 
 
