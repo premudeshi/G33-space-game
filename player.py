@@ -7,13 +7,21 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, bullets, all_sprites,
 pygame.init()
 pygame.mixer.init()
 
-player_laser = pygame.mixer.Sound('sounds/player_fire.mp3')
-player_explosion = pygame.mixer.Sound('sounds/player_explosion.mp3')
+player_laser = pygame.mixer.Sound('sounds/player_fire.ogg')
+player_explosion = pygame.mixer.Sound('sounds/player_explosion.ogg')
+explosion = [pygame.image.load("sprites/explosion/explosion1.png"),
+    pygame.image.load("sprites/explosion/explosion2.png"),
+    pygame.image.load("sprites/explosion/explosion3.png"),
+    pygame.image.load("sprites/explosion/explosion4.png"),
+    pygame.image.load("sprites/explosion/explosion5.png"),
+    pygame.image.load("sprites/explosion/explosion6.png"),
+    pygame.image.load("sprites/explosion/explosion7.png"),
+    pygame.image.load("sprites/explosion/explosion8.png")]
 
 class Player(Ship):
     def __init__(self, image_path, x, y, speed):
         # initialize the player
-        super().__init__(image_path, x - 25, y)
+        super(Player, self).__init__(image_path, x - 25, y)
         self.image = pygame.transform.scale(self.image, (SCREEN_WIDTH // 9, SCREEN_HEIGHT // 16))
         self.rect.width = SCREEN_WIDTH // 9
         self.rect.height = SCREEN_HEIGHT // 16
@@ -24,6 +32,7 @@ class Player(Ship):
         self.i_frames = 30 # give player half a second of i frames at the start
         self.original_image = self.image # keep track of original image in case user buys the new sprite option
         self.upPressed, self.downPressed, self.rightPressed, self.leftPressed, self.uprightPressed, self.upleftPressed, self.downrightPressed, self.downleftPressed, self.firePressed = False, False, False, False, False, False, False, False, False
+        self.currImage = self.image
 
     def update(self):
         # lets the player move
@@ -112,18 +121,32 @@ class Player(Ship):
             self.cooldown = 30 - 3 * self.upgrades[6]
     
     # damage the player by lower the number of lives they have. Then reset them back to the center of the screen, pause for a second, and give them a second of i frames
-    def decrement_lives(self):
+    def decrement_lives(self, screen):
+        self.currImage = self.image
+        self.i_frames = 60
+        pygame.mixer.Sound.play(player_explosion)
+        for i in range(8):
+            self.image = explosion[i]
+            self.draw_background(screen)
+            all_sprites.draw(screen)
+            pygame.display.flip()
+            time.sleep(.1)
         self.upgrades[4] -= 1
         self.rect.x = SCREEN_WIDTH // 2
         self.rect.y = SCREEN_HEIGHT // 2
-        self.i_frames = 60
-        pygame.mixer.Sound.play(player_explosion)
-        time.sleep(.5)
+        self.image = self.currImage
+        if (self.upgrades[4] > 0):
+            time.sleep(.5)
+        
         
     # change the player image in case user buys new sprite upgrade
     def change_sprite(self, image_path):
         self.image = pygame.image.load(image_path)
         self.image = pygame.transform.scale(self.image, (SCREEN_WIDTH // 9, SCREEN_HEIGHT // 16))
     
+    # required to make the explosion work
+    def draw_background(self, screen):
+        background = pygame.image.load('sprites/background.png')
+        screen.blit(background, (0, 0))
 
     

@@ -418,7 +418,7 @@ class main:
                 enemy_bullet_collisions = pygame.sprite.spritecollide(self.player, enemy_bullets, True)
                 for bullet in enemy_bullet_collisions:
                     if (self.player.i_frames <= 0):
-                        self.player.decrement_lives()
+                        self.player.decrement_lives(self.screen)
                         # in addition, remove all enemies and bullets currently on-screen
                         for enemy in enemies:
                             all_sprites.remove(enemy)
@@ -451,7 +451,7 @@ class main:
                         # determine if player has battering ram or if they ran into an asteroid, which still kills them
                         if self.player.upgrades[3] == 0 or enemy.points == 1:
                             # if not, kill player
-                            self.player.decrement_lives()
+                            self.player.decrement_lives(self.screen)
                             # in addition, remove all enemies and bullets currently on-screen
                             for enemy in enemies:
                                 all_sprites.remove(enemy)
